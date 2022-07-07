@@ -1,129 +1,165 @@
 import React, { createRef, useEffect, useState } from "react";
-
+import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
 import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
 import ChatItem from "./ChatItem";
+import { inputMessages, userMessage } from "../../redux/reducers/messageSlice";
+import AuthUser from "../auth/AuthUser";
 
-const chatItems = [
-  {
-    key: 1,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "",
-    msg: "Hi Tim, How are you?",
-  },
-  {
-    key: 2,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "I am fine.",
-  },
-  {
-    key: 3,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "What about you?",
-  },
-  {
-    key: 4,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "",
-    msg: "Awesome these days.",
-  },
-  {
-    key: 5,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "Finally. What's the plan?",
-  },
-  {
-    key: 6,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "",
-    msg: "what plan mate?",
-  },
-  {
-    key: 7,
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "I'm talking about the tutorial",
-  },
-];
+// import {incrementByAmount} from "../../redux/reducers/messageSlice";
+
+// const chatItems = [
+//   {
+//     key: 1,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "",
+//     msg: "Hi Tim, How are you?",
+//   },
+//   {
+//     key: 2,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "other",
+//     msg: "I am fine.",
+//   },
+//   {
+//     key: 3,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "other",
+//     msg: "What about you?",
+//   },
+//   {
+//     key: 4,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "",
+//     msg: "Awesome these days.",
+//   },
+//   {
+//     key: 5,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "other",
+//     msg: "Finally. What's the plan?",
+//   },
+//   {
+//     key: 6,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "",
+//     msg: "what plan mate?",
+//   },
+//   {
+//     key: 7,
+//     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+//     type: "other",
+//     msg: "I'm talking about the tutorial",
+//   },
+// ];
 
 export default function ChatContent() {
-  const [msg, setMsg] = useState("");
-  const [chat, setChat] = useState(chatItems);
-
+  /*const dispatch = useDispatch();
+  const count = useSelector(state => state.message.count);
+  const [incrementAmount, setIncrementAmount] = useState(0);
+  const addValue = Number(incrementAmount) || 0;*/
   const messagesEndRef = createRef(null);
+  const {http} = AuthUser();
+
+  const dispatch = useDispatch();
+  // const [msg, setMsg] = useState("");
+  // const [chat, setChat] = useState(chatItems);
+
+  const messages = useSelector(state => state.message.userMessage.messages);
+  const user = useSelector(state => state.message.userMessage.user);
+  const inputMessage = useSelector(state => state.message.inputMessages);
 
   // eslint-disable-next-line
   const scrollToBottom = () => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   };
-
+  
   useEffect(() => {
-    window.addEventListener("keydown", (e) => {
-      if (e.keypress === 13) {
-        if (msg !== "") {
-          chatItems.push({
-            key: 1,
-            type: "",
-            msg: msg,
-            image:
-              "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-          });
-          setChat(...chatItems);
-          console.log(...chatItems);
-          scrollToBottom();
-          setMsg("");
-          console.log();
-        }
-      }
-    });
     scrollToBottom();
-    // eslint-disable-next-line
-  },[]);
-
+  });
+  
   const onStateChange = (e) => {
-    setMsg(e.target.value);
+    dispatch(inputMessages(e.target.value));
   };
+  
+  const userId = typeof user != 'undefined' ? user.id : "No Id Found";
+  const userImg = typeof user != 'undefined' ? user.image : "#";
+  
+  // console.log(userId);
+  // console.log(inputMessage);
+
+  const userMessages = async (id) => {
+    http.get(`/user_message/${id}`).then((res) => {
+      // console.log(res);
+      dispatch(userMessage(res.data));
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const data = {
+      user_id: userId,
+      message: inputMessage,
+    }
+
+    if(inputMessage != "") {
+      http.post("/send_message", data).then((res) => {
+        // console.log(res);
+        userMessages(userId);
+      })
+      dispatch(inputMessages(""));
+    }
+  }
 
   return (
     <div className="main__chatcontent">
+      {/* <div>
+      <h1>Redux {count}</h1>
+      <input
+            type = "text"
+            value = {incrementAmount}
+            onChange={e => setIncrementAmount(e.target.value)}
+        />
+        <button onClick={() => dispatch(incrementByAmount(addValue))}>Add Count</button>
+      </div> */}
       <div className="content__header">
         <div className="blocks">
           <div className="current-chatting-user">
             <Avatar
               isOnline="active"
-              image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
+              image={typeof user != 'undefined' ? "http://127.0.0.1:8000"+user.image : "https://dummyimage.com/80x80/000/fff"}
             />
-            <p>Tim Hover</p>
+            <p>{typeof user != 'undefined' ? user.fname + ' ' + user.lname : "No Message"}</p>
           </div>
         </div>
 
-        <div className="blocks">
+        {/* <div className="blocks">
           <div className="settings">
             <button className="btn-nobg">
               <i className="fa fa-cog"></i>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="content__body">
         <div className="chat__items">
-          {chat.map((itm, index) => (
+          {Array.isArray(messages) && messages.length > 0 && messages.map((itm, index) => (
               <ChatItem
-                animationDelay={index + 2}
-                key={itm.key}
-                user={itm.type ? itm.type : "me"}
-                msg={itm.msg}
-                image={itm.image}
+                key={itm.id}
+                id={itm.user_id}
+                userId={userId}
+                msg={itm.message}
+                image={userImg}
+                time={itm.created_at}
             />
           ))}
           <div ref={messagesEndRef} />
         </div>
       </div>
       <div className="content__footer">
-        <div className="sendNewMessage">
+        <form onSubmit={handleSubmit} className="sendNewMessage">
           <button className="addFiles">
             <i className="fa fa-plus"></i>
           </button>
@@ -131,12 +167,12 @@ export default function ChatContent() {
             type="text"
             placeholder="Type a message here"
             onChange={onStateChange}
-            value={msg}
+            value={inputMessage}
           />
-          <button className="btnSendMsg" id="sendMsgBtn">
+          <button type="submit" className="btnSendMsg" id="sendMsgBtn">
             <i className="fa fa-paper-plane"></i>
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import logo from "./../../images/logo.png";
 
 export default function Nav() {
   return (
-    <div className="nav">
+    <div className="navDiv">
       <div className="nav__blocks">
         <img src={logo} alt="" />
       </div>
