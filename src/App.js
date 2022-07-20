@@ -10,6 +10,10 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import PublicRoute from "./components/auth/PublicRoute";
 import PrivateRoute from "./components/auth/PrivateRoute";
+import AuthUser from "./components/auth/AuthUser";
+
+// const socket = io.connect("http://127.0.0.1:4000");
+// console.log(socket);
 
 function App() {
   return (

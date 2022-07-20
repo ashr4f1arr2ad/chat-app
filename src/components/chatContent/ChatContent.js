@@ -1,5 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
-import moment from "moment";
+import React, { createRef, useEffect } from "react";
 import {useDispatch, useSelector} from "react-redux";
 import "./chatContent.css";
 import Avatar from "../chatList/Avatar";
@@ -54,20 +53,22 @@ import AuthUser from "../auth/AuthUser";
 //   },
 // ];
 
+// const socket = io.connect("http://127.0.0.1:3001");
+
 export default function ChatContent() {
   /*const dispatch = useDispatch();
   const count = useSelector(state => state.message.count);
   const [incrementAmount, setIncrementAmount] = useState(0);
   const addValue = Number(incrementAmount) || 0;*/
   const messagesEndRef = createRef(null);
-  const {http} = AuthUser();
+  const {http, user, token} = AuthUser();
 
   const dispatch = useDispatch();
   // const [msg, setMsg] = useState("");
   // const [chat, setChat] = useState(chatItems);
 
   const messages = useSelector(state => state.message.userMessage.messages);
-  const user = useSelector(state => state.message.userMessage.user);
+  const users = useSelector(state => state.message.userMessage.user);
   const inputMessage = useSelector(state => state.message.inputMessages);
 
   // eslint-disable-next-line
@@ -83,8 +84,8 @@ export default function ChatContent() {
     dispatch(inputMessages(e.target.value));
   };
   
-  const userId = typeof user != 'undefined' ? user.id : "No Id Found";
-  const userImg = typeof user != 'undefined' ? user.image : "#";
+  const userId = typeof users != 'undefined' ? users.id : "No Id Found";
+  const userImg = typeof users != 'undefined' ? users.image : "#";
   
   // console.log(userId);
   // console.log(inputMessage);
@@ -106,9 +107,9 @@ export default function ChatContent() {
 
     if(inputMessage != "") {
       http.post("/send_message", data).then((res) => {
-        // console.log(res);
-        userMessages(userId);
-      })
+          // console.log(res);
+          userMessages(userId);
+        });
       dispatch(inputMessages(""));
     }
   }
@@ -129,9 +130,9 @@ export default function ChatContent() {
           <div className="current-chatting-user">
             <Avatar
               isOnline="active"
-              image={typeof user != 'undefined' ? "http://127.0.0.1:8000"+user.image : "https://dummyimage.com/80x80/000/fff"}
+              image={typeof users != 'undefined' ? "http://127.0.0.1:8000"+users.image : "https://dummyimage.com/80x80/000/fff"}
             />
-            <p>{typeof user != 'undefined' ? user.fname + ' ' + user.lname : "No Message"}</p>
+            <p>{typeof users != 'undefined' ? users.fname + ' ' + users.lname : "No Message"}</p>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Echo from 'laravel-echo';
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./chatList.css";
@@ -81,11 +82,53 @@ import {userMessage} from "../../redux/reducers/messageSlice";
 // ];
 
 export default function ChatList() {
-  const { users } = AuthUser();
+  const { users, user, token, http } = AuthUser();
   const dispatch = useDispatch();
   
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    echoInit();
+  });
+
+  const userMessages = async (id) => {
+    http.get(`/user_message/${id}`).then((res) => {
+      // console.log(res);
+      dispatch(userMessage(res.data));
+    });
+  }
+
+  const echoInit = () => {
+    window.Pusher = require('pusher-js');
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: process.env.REACT_APP_MIX_PUSHER_APP_KEY,
+        cluster: process.env.REACT_APP_MIX_PUSHER_APP_CLUSTER,
+        wsHost: window.location.hostname,
+        wsPort: 6001,
+        forceTLS: false,
+        disableStats: true,
+        encrypted:true,
+        authEndpoint: 'http://127.0.0.1:8000/api/broadcasting/auth',
+        auth: {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+    });
+    // window.Echo.connector.options.auth.headers["Authorization"] =
+    //   "Bearer " + token;
+    // window.Echo.options.auth = {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`
+    //   }
+    // };
+    window.Echo.private(`chat.${user.id}`).listen('MessageSend', (e) => {
+      console.log('Message Sent To Specific User');
+      userMessages(e.message.user_id);
+    })
+  }
 
   // eslint-disable-next-line
   // const [allChatUsers, setAllChatUsers] = useState(allChatUserItems);

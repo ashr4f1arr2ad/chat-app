@@ -51,7 +51,6 @@ export default function AuthUser(){
         baseURL:"http://127.0.0.1:8000/api",
         headers:{
             "Content-type" : "application/json",
-            "Content-type" : "multipart/form-data",
             "Authorization" : `Bearer ${token ? token : 'No token Found'}`
         }
     });

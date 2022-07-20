@@ -6,6 +6,14 @@ import moment from "moment";
 export default function ChatItem({userId, msg, image, id, time}) {
   const { user } = AuthUser();
 
+  // (function () {
+  //   let ip_address = "127.0.0.1";
+  //   let socket_port = "3000";
+  //   let socket = io(ip_address + ":" + socket_port);
+
+  //   socket.on("Connection");
+  // })
+
   return (
     <div
       className={`chat__item ${userId===id ? "other" : ""}`}
