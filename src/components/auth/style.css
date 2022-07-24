@@ -95,5 +95,5 @@
 
 a:focus, a:hover, a:visited {
     outline: none;
-    color: #fff;
+    color: #000;
 }

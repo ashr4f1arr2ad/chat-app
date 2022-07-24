@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Echo from 'laravel-echo';
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./chatList.css";
@@ -82,52 +81,23 @@ import {userMessage} from "../../redux/reducers/messageSlice";
 // ];
 
 export default function ChatList() {
-  const { users, user, token, http } = AuthUser();
+  const { http } = AuthUser();
   const dispatch = useDispatch();
   
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [usersList, setUsersList] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    echoInit();
-  });
+    usersLists();
+  }, [])
 
-  const userMessages = async (id) => {
-    http.get(`/user_message/${id}`).then((res) => {
-      // console.log(res);
-      dispatch(userMessage(res.data));
+  const usersLists = async (id) => {
+    http.get(`/register`).then((res) => {
+      console.log(res);
+      setUsersList(res.data.users);
     });
-  }
-
-  const echoInit = () => {
-    window.Pusher = require('pusher-js');
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: process.env.REACT_APP_MIX_PUSHER_APP_KEY,
-        cluster: process.env.REACT_APP_MIX_PUSHER_APP_CLUSTER,
-        wsHost: window.location.hostname,
-        wsPort: 6001,
-        forceTLS: false,
-        disableStats: true,
-        encrypted:true,
-        authEndpoint: 'http://127.0.0.1:8000/api/broadcasting/auth',
-        auth: {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-    });
-    // window.Echo.connector.options.auth.headers["Authorization"] =
-    //   "Bearer " + token;
-    // window.Echo.options.auth = {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`
-    //   }
-    // };
-    window.Echo.private(`chat.${user.id}`).listen('MessageSend', (e) => {
-      console.log('Message Sent To Specific User');
-      userMessages(e.message.user_id);
-    })
   }
 
   // eslint-disable-next-line
@@ -143,26 +113,32 @@ export default function ChatList() {
   
   return (
     <div className="main__chatlist">
-      <button className="btn" onClick={() => {setModalOpen(true);}}>
+      {/* <button className="btn" onClick={() => {setModalOpen(true);}}>
         <i className="fa fa-plus"></i>
         <span>New conversation</span>
-      </button>
-      <div className="chatlist__heading">
+      </button> */}
+      <div className="chatlist__heading mb-4">
         <h2>Chats</h2>
-        <button className="btn-nobg">
+        {/* <button className="btn-nobg">
           <i className="fa fa-ellipsis-h"></i>
-        </button>
+        </button> */}
       </div>
       <div className="chatList__search">
         <div className="search_wrap">
-          <input type="text" placeholder="Search Here" required />
-          <button className="search-btn">
+          <input type="text" placeholder="Search Here" required onChange={(e) => {setSearchValue(e.target.value)}}/>
+          {/* <button className="search-btn">
             <i className="fa fa-search"></i>
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="chatlist__items">
-        {users.map((user, index) => (
+        {usersList.filter((user) => {
+          if(searchValue === "") {
+            return user;
+          } else if(user.fname.toLowerCase().includes(searchValue.toLowerCase())) {
+            return user;
+          }
+        }).map((user, index) => (
             <ChatListItems
               fname={user.fname}
               lname={user.lname}

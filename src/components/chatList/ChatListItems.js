@@ -1,21 +1,9 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import _ from "lodash";
 import {userMessage} from "../../redux/reducers/messageSlice";
 import {useDispatch, useSelector} from "react-redux";
 import Avatar from "./Avatar";
 import AuthUser from "../auth/AuthUser";
-
-// const initialState = {
-//   userMessages: []
-// }
-
-// function userMessage(state, action) {
-//   switch (action.type) {
-//     case 'increment':
-//       return {userMessages: state.userMessages};
-//     default:
-//       throw new Error();
-//   }
-// }
 
 export default function ChatListItems({ fname, lname, active, isOnline, id, imgPath }) {
   // const [user, setUser] = useState();
@@ -31,16 +19,28 @@ export default function ChatListItems({ fname, lname, active, isOnline, id, imgP
 
   // const [userId, setUserId] = useState();
 
-  const { http } = AuthUser();
+  const { http, user } = AuthUser();
 
   const dispatch = useDispatch();
-  const messages = useSelector(state => state.message.userMessage);
+  const usersActive = useSelector(state => state.message.usersActive);
+  // const messages = useSelector(state => state.message.userMessage);
   // console.log(messages);
   // const [message, setMessage] = useState([]);
 
   // useEffect(() => {
   //   userMessages();
   // });
+
+  // const onlineUser = (id) => {
+  //   // return _.find(usersActive, (obj) => {
+  //   //   console.log(obj.id);
+  //   //   // if(obj.id === id) {
+  //   //   //   return true;
+  //   //   // }
+  //   // });
+  //   // return _.find(usersActive, {'id': id});
+  //   console.log(_.find(usersActive, {'id': id}));
+  // }
 
   const userMessages = async (id) => {
     http.get(`/user_message/${id}`).then((res) => {
@@ -68,7 +68,7 @@ export default function ChatListItems({ fname, lname, active, isOnline, id, imgP
         image={
           imgPath ? "http://127.0.0.1:8000"+imgPath : "#"
         }
-        isOnline={isOnline}
+        // isOnline={onlineUser(user.id)}
       />
       <div className="userMeta">
         <p>{fname} {lname}</p>

@@ -97,7 +97,7 @@ export default function Register() {
                     <div className="form-group file">
                         <label>Profile Picture</label>
                         <input type="file" className="form-control" onChange={handleImage}/>
-                        {/* <span style={{color: 'red', display: 'block', marginTop: '10px'}}>{errorList.password}</span> */}
+                        <span style={{color: 'red', display: 'block', marginTop: '10px'}}>{errorList.image}</span>
                     </div>
 
                     <button type="submit">{loading ? <LoadingSpinner/> : <span>Register</span> }</button>

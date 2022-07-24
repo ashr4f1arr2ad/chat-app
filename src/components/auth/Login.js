@@ -4,6 +4,7 @@ import BgImg from "../../images/bg-01.jpg";
 import "./style.css";
 import AuthUser from "./AuthUser";
 import LoadingSpinner from "./LoadingSpinner";
+import { useEffect } from "react";
 
 export default function Login() {
 	const { http, setToken } = AuthUser();
@@ -35,7 +36,7 @@ export default function Login() {
 
 		setLoading(true);
 		http.post('/login', data).then((res) => {
-			console.log(res);
+		console.log(res);
 		console.log(res.data.users);
 		if(res.data.status === 404) {
 			setErrorList(res.data.validate_err);
@@ -54,8 +55,6 @@ export default function Login() {
 		// console.log(res.data.validate_err);
 		// console.log(res.data.status);
 		})
-		
-		
 	}
 
 	return (
@@ -66,7 +65,7 @@ export default function Login() {
 					<div className="form-group">
 						<label>Email</label>
 						<input type="email" className="form-control" name="email" placeholder="Enter email" onChange={handleChange} value={inputs.email} />
-						<span style={{color: 'red', display: 'block', marginTop: '5px'}} className="border-solid border-2 border-sky-500">{errorList.email}</span>
+						<span style={{color: 'red', display: 'block', marginTop: '5px'}}>{errorList.email}</span>
 					</div>
 
 					<div className="form-group">
