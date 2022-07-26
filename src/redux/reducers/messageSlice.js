@@ -5,7 +5,9 @@ export const messageSlice = createSlice({
     initialState: {
         userMessage: [],
         inputMessages: '',
-        usersActive: []
+        usersActive: [],
+        user:"",
+        leave:""
     },
     reducers: {
         userMessage: (state, action) => {
@@ -15,14 +17,22 @@ export const messageSlice = createSlice({
             state.inputMessages = action.payload;
         },
         activeUsers:(state, action) => {
-            state.usersActive = action;
+            // state.usersActive = action;
             state.usersActive = action.payload;
+        },
+        activeUser:(state, action) => {
+            // state.usersActive = action;
+            state.user = action.payload;
+        },
+        leaveUser:(state, action) => {
+            // state.usersActive = action;
+            state.leave = action.payload;
         }
     }
 })
 
 //This is for dispatch
-export const { userMessage, inputMessages, activeUsers } = messageSlice.actions;
+export const { userMessage, inputMessages, activeUsers, activeUser, leaveUser } = messageSlice.actions;
 
 //this is for configureStore
 export default messageSlice.reducer;

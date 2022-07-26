@@ -20,8 +20,6 @@ export default function Register() {
         password: ''
     });
 
-    // console.log(picture);
-
     const handleChange = (e) => {
 		const {name, value} = e.target;
 		// console.log({[name]: value});

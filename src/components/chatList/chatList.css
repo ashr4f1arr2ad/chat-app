@@ -2,6 +2,8 @@
   border-right: 1px solid #ebe7fb;
   padding: 0 20px 0 0px;
   position: relative;
+  max-width: 22%;
+  flex-grow: 1;
 }
 .chatlist__heading {
   display: flex;
@@ -53,6 +55,7 @@
   margin-top: 10px;
   cursor: pointer;
   padding: 10px 10px 10px 20px;
+  position: relative;
 }
 @keyframes showIn {
   0% {
@@ -74,8 +77,9 @@
   position: relative;
 }
 .avatar img {
-  max-width: 100%;
+  min-width: 100%;
   object-fit: cover;
+
 }
 
 .chatlist__item .userMeta p {
@@ -101,14 +105,17 @@
 }
 .isOnline {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 13px;
+  height: 13px;
   position: absolute;
   bottom: 0;
   right: 0;
   background-color: #04c633;
   border-radius: 50%;
   border: 2px solid #fff;
+  position: absolute;
+  left: 46px;
+  top: 40px;
 }
 .isOnline.active {
   background-color: tomato;

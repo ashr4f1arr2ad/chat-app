@@ -4,7 +4,6 @@ import BgImg from "../../images/bg-01.jpg";
 import "./style.css";
 import AuthUser from "./AuthUser";
 import LoadingSpinner from "./LoadingSpinner";
-import { useEffect } from "react";
 
 export default function Login() {
 	const { http, setToken } = AuthUser();
@@ -38,22 +37,18 @@ export default function Login() {
 		http.post('/login', data).then((res) => {
 		console.log(res);
 		console.log(res.data.users);
-		if(res.data.status === 404) {
-			setErrorList(res.data.validate_err);
-			// console.log(res.data.validate_err);
-			setLoading(false);
-		} else if(res.data.status === 401) {
-			setError(res.data.error);
-			// console.log(res.data.error);
-			setLoading(false);
-		} else {
-			setToken(res.data.access_token, res.data.user, res.data.users, res.data.messages);
-			setLoading(false);
-		}
-		// console.log(res.data.access_token);
-		// console.log(res.data.user);
-		// console.log(res.data.validate_err);
-		// console.log(res.data.status);
+			if(res.data.status === 404) {
+				setErrorList(res.data.validate_err);
+				// console.log(res.data.validate_err);
+				setLoading(false);
+			} else if(res.data.status === 401) {
+				setError(res.data.error);
+				// console.log(res.data.error);
+				setLoading(false);
+			} else {
+				setToken(res.data.access_token, res.data.user, res.data.users, res.data.messages);
+				setLoading(false);
+			}
 		})
 	}
 

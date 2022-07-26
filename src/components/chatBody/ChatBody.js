@@ -4,14 +4,9 @@ import {useDispatch} from "react-redux";
 import "./chatBody.css";
 // import Nav from "../nav/Nav";
 import ChatBodyInner from "./ChatBodyInner";
-import AuthUser from "../auth/AuthUser";
-import { activeUsers } from "../../redux/reducers/messageSlice";
+import { activeUsers, activeUser, leaveUser } from "../../redux/reducers/messageSlice";
 
 export default function ChatBody() {
-  const { messages } = AuthUser();
-  console.log(messages);
-
-  const [usersActive, setUserActive] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,10 +23,11 @@ export default function ChatBody() {
     .joining((user) => {
       // console.log(user);
       // dispatch(activeUsers(user));
-        // setUserActive(user);
+        dispatch(activeUser(user));
     })
     .leaving((user) => {
       console.log(user.fname);
+      dispatch(leaveUser(user));
     })
   }
 

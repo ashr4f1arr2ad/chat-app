@@ -1,9 +1,10 @@
 .main__userprofile {
-  width: 20%;
+  max-width: 15%;
   padding: 0 10px 0 10px;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
   position: relative;
+  flex-grow: 1;
 }
 .profile__card {
   background-color: #fff;

@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import Avatar from "../chatList/Avatar";
 import AuthUser from "../auth/AuthUser";
 import moment from "moment";
 
-export default function ChatItem({userId, msg, image, id, time}) {
+export default function ChatItem({userId, msg, image, id, time, isOnline}) {
   const { user } = AuthUser();
 
   return (
@@ -16,7 +16,7 @@ export default function ChatItem({userId, msg, image, id, time}) {
           <span>{moment(time).startOf('seconds').fromNow()}</span>
         </div>
       </div>
-      <Avatar isOnline="active" image={userId===id ? "http://127.0.0.1:8000"+image : "http://127.0.0.1:8000"+user.image} />
+      <Avatar image={userId===id ? "http://127.0.0.1:8000"+image : "http://127.0.0.1:8000"+user.image} isOnline={isOnline} />
     </div>
   );
 }
