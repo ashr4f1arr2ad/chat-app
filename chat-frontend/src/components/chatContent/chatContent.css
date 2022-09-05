@@ -1,0 +1,125 @@
+.main__chatcontent {
+  flex-grow: 1;
+  padding: 20px 20px;
+  max-width: 63%;
+  border-right: 1px solid #ebe7fb;
+  position: relative;
+}
+.content__header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid #cccbcf;
+}
+.current-chatting-user {
+  display: flex;
+  align-items: center;
+}
+.current-chatting-user p {
+  margin: 0;
+  font-weight: 600;
+}
+.content__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.settings .btn-nobg {
+  color: #000;
+}
+.content__body {
+  max-height: calc(100vh - calc(70vh / 2));
+  overflow-y: auto;
+  padding-top: 10px;
+}
+.chat__item {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+.chat__item .avatar {
+  margin-right: 0px;
+  margin-left: 20px;
+  background: #fff;
+  padding: 1px;
+}
+.chat__item__content {
+  background-color: #4462ff;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px 10px 0 10px;
+  max-width: 50%;
+  min-width: 215px;
+}
+/* .chat__item__content .chat__meta {
+  justify-content: space-between;
+  display: flex;
+  margin-top: 10px;
+} */
+.chat__item__content .chat__meta span {
+  font-size: 12.5px;
+  color: #cdced6;
+  user-select: none;
+}
+
+.chat__item.other {
+  flex-direction: row-reverse;
+  transform-origin: left;
+}
+.chat__item.other .chat__item__content {
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px 10px 10px 0;
+  max-width: 50%;
+}
+.chat__item.other .avatar {
+  margin-right: 20px;
+  margin-left: 0px;
+}
+.chat__item.other .chat__item__content .chat__meta span {
+  color: #6c6767;
+}
+.content__footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.sendNewMessage {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+}
+.sendNewMessage button {
+  width: 36px;
+  height: 36px;
+  background-color: #d2d2d2;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #4665ff;
+  padding: 0;
+  border-radius: 5px;
+  line-height: 36px;
+  transition: all 0.3s cubic-bezier(0.88, 0.19, 0.37, 1.11);
+}
+.sendNewMessage button:hover {
+  transform: scale(1.2);
+}
+.sendNewMessage button i {
+  display: block;
+}
+.sendNewMessage input {
+  flex-grow: 1;
+  padding: 0 15px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+#sendMsgBtn {
+  background-color: #3b5bfe;
+  color: #fff;
+}

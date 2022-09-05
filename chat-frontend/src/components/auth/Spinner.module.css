@@ -1,0 +1,29 @@
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner_container {
+    position: relative;
+}
+
+.loading_spinner {
+    width: 35px;
+    height: 35px;
+    border: 3px solid #f3f3f3;
+    /* Light grey */
+    border-top: 3px solid #383636;
+    /* Black */
+    border-radius: 50%;
+    animation: spinner 1.5s linear infinite;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: -17.5px;
+}
